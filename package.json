@@ -1,13 +1,16 @@
 {
   "name": "simple-static-compress",
   "version": "0.1.0",
-  "description": "",
+  "description": "Brolti and gzip compression recursively",
   "main": "index.js",
   "scripts": {},
   "bin": {
     "scpress": "index.js"
   },
-  "author": "",
+  "author": "Anthony Ou",
+  "repository": {
+    "url": "https://github.com/Anthonyzou/simple-compress"
+  },
   "license": "ISC",
   "dependencies": {
     "commander": "2.19.0",

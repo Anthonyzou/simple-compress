@@ -24,6 +24,7 @@ const acceptedTypes = [
   'application/json',
 ];
 console.time('app');
+console.time('files');
 glob(`${commander.folder}/**/*`, async (err, files) => {
   let inProgress = 0;
   let done = 0;
@@ -33,7 +34,7 @@ glob(`${commander.folder}/**/*`, async (err, files) => {
       inProgress++;
       forks[inProgress % forks.length].send(file);
     });
-
+  console.timeEnd('files');
   forks.map(fork => {
     fork.on('message', () => {
       done++;
