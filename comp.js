@@ -7,7 +7,7 @@ const longComputation = async file => {
   const [br, gz] = await Promise.all([
     compress(content),
     new Promise((res, reject) => {
-      zlib.gzip(content.toString(), (err, buf) => {
+      zlib.gzip(content, (err, buf) => {
         res(buf);
       });
     }),
