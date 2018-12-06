@@ -23,6 +23,7 @@ const acceptedTypes = [
   'application/javascript',
   'application/json',
 ];
+console.time('app');
 glob(`${commander.folder}/**/*`, async (err, files) => {
   let inProgress = 0;
   let done = 0;
@@ -37,6 +38,7 @@ glob(`${commander.folder}/**/*`, async (err, files) => {
     fork.on('message', () => {
       done++;
       if (done == inProgress) {
+        console.timeEnd('app');
         process.exit();
       }
     });
