@@ -1,6 +1,6 @@
 {
   "name": "simple-static-compress",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Brolti and gzip compression recursively",
   "main": "index.js",
   "scripts": {},
