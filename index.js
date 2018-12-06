@@ -1,13 +1,20 @@
 #!/usr/bin/env node
 
-const { compress } = require('wasm-brotli');
-const fs = require('fs-extra');
-const zlib = require('zlib');
+const path = require('path');
+const os = require('os');
 const glob = require('glob');
 const commander = require('commander');
 const mime = require('mime-types');
 
+const { fork } = require('child_process');
+
 commander.option('-f, --folder [folder]').parse(process.argv);
+
+const forks = [];
+const cpus = os.cpus().length;
+for (var i = 0; i < cpus; i++) {
+  forks.push(fork(path.resolve(__dirname, 'comp.js')));
+}
 
 const acceptedTypes = [
   'text/html',
@@ -17,26 +24,21 @@ const acceptedTypes = [
   'application/json',
 ];
 glob(`${commander.folder}/**/*`, async (err, files) => {
-  const results = files
-    .filter(file => {
-      const a = acceptedTypes.includes(mime.lookup(file));
-      console.log(file, mime.lookup(file));
-      return a;
-    })
-    .map(async file => {
-      const content = await fs.readFile(file);
-      const [br, gz] = await Promise.all([
-        compress(content),
-        new Promise((res, reject) => {
-          zlib.gzip(content.toString(), (err, buf) => {
-            res(buf);
-          });
-        }),
-      ]);
-      return Promise.all([
-        fs.writeFile(file + '.br', br),
-        fs.writeFile(file + '.gz', gz),
-      ]);
+  let inProgress = 0;
+  let done = 0;
+  files
+    .filter(file => acceptedTypes.includes(mime.lookup(file)))
+    .map(file => {
+      inProgress++;
+      forks[inProgress % forks.length].send(file);
     });
-  await Promise.all(results);
+
+  forks.map(fork => {
+    fork.on('message', () => {
+      done++;
+      if (done == inProgress) {
+        process.exit();
+      }
+    });
+  });
 });
