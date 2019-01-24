@@ -1,27 +1,32 @@
 const fs = require('fs-extra');
-const zlib = require('zlib');
+const { createGzip, createBrotliCompress } = require('zlib');
 
-const longComputation = async file => {
-  const content = await fs.readFile(file);
-  const [br, gz] = await Promise.all([
-    new Promise((res, reject) => {
-      zlib.brotliCompress(content, (err, buf) => {
-        res(buf);
-      });
-    }),
-    new Promise((res, reject) => {
-      zlib.gzip(content, (err, buf) => {
-        res(buf);
-      });
-    }),
-  ]);
+const gzip = createGzip({});
+const brotli = createBrotliCompress({});
+
+const compression = async file => {
+  const input = fs.createReadStream(file);
+  const br = fs.createWriteStream(`${file}.br`);
+  const gz = fs.createWriteStream(`${file}.gz`);
+
+  input.pipe(gzip).pipe(gz);
+  input.pipe(brotli).pipe(br);
+
   return Promise.all([
-    fs.writeFile(file + '.br', br),
-    fs.writeFile(file + '.gz', gz),
+    new Promise(res => {
+      gz.on('close', res);
+    }),
+    new Promise(res => {
+      br.on('close', res);
+    }),
   ]);
 };
 
 process.on('message', async message => {
-  await longComputation(message);
+  try {
+    await compression(message);
+  } catch (e) {
+    console.log(e);
+  }
   process.send(message);
 });
