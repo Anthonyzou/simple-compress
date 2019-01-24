@@ -1,11 +1,14 @@
-const { compress } = require('wasm-brotli');
 const fs = require('fs-extra');
 const zlib = require('zlib');
 
 const longComputation = async file => {
   const content = await fs.readFile(file);
   const [br, gz] = await Promise.all([
-    compress(content),
+    new Promise((res, reject) => {
+      zlib.brotliCompress(content, (err, buf) => {
+        res(buf);
+      });
+    }),
     new Promise((res, reject) => {
       zlib.gzip(content, (err, buf) => {
         res(buf);
