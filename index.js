@@ -6,15 +6,11 @@ const glob = require('glob');
 const commander = require('commander');
 const mime = require('mime-types');
 
-const { fork } = require('child_process');
+const {
+  fork
+} = require('child_process');
 
 commander.option('-f, --folder [folder]').parse(process.argv);
-
-const forks = [];
-const cpus = os.cpus().length;
-for (var i = 0; i < cpus; i++) {
-  forks.push(fork(path.resolve(__dirname, 'comp.js')));
-}
 
 const acceptedTypes = [
   'text/html',
@@ -26,6 +22,15 @@ const acceptedTypes = [
 console.time('app');
 console.time('files');
 glob(`${commander.folder}/**/*`, async (err, files) => {
+  if (files.length == 0) {
+    return
+  }
+  const forks = [];
+  const cpus = os.cpus().length;
+  for (var i = 0; i < cpus; i++) {
+    forks.push(fork(path.resolve(__dirname, 'comp.js')));
+  }
+
   let inProgress = 0;
   let done = 0;
   files
