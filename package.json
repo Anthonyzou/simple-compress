@@ -1,0 +1,21 @@
+{
+  "name": "package-copy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chokidar": "^3.0.1",
+    "commander": "^2.20.0",
+    "fs-extra": "^8.0.1",
+    "globby": "^9.2.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^8.0.0",
+    "@types/node": "^12.0.10"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "packaging": {
+    "watch": [
+      {
+        "dirs": [
+          "src",
+          "test"
+        ],
+        "ignore": ".ts",
+        "dest": "dist",
+        "keepPath": true
+      }
+    ],
+    "copy": [
+      {
+        "gz": true,
+        "br": true,
+        "dirs": [
+          "node_modules/muicss/dist/email/*.css"
+        ],
+        "dest": "dist/src/services/templates",
+        "keepPath": false
+      }
+    ]
+  }
+}
