@@ -64,6 +64,7 @@ if (program.watch) {
   }) => {
     chokidar
       .watch(dirs, {
+        dot: true,
         ...ignore && {
           ignored: ignore.substr(1),
         },
@@ -83,6 +84,7 @@ if (program.watch) {
       });
   });
 }
+
 const watch = program.watch ? [] : package.watch;
 package.copy.concat(watch).map(async (directory) => {
   const {
@@ -98,7 +100,9 @@ package.copy.concat(watch).map(async (directory) => {
     dirs.push(ignore)
   }
 
-  const matches = await glob(dirs);
+  const matches = await glob(dirs, {
+    dot: true
+  });
 
   matches.map(async path => {
     handleFile(path, dest, keepPath, br, gz, ignoreWatchDir)
