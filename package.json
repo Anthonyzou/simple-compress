@@ -1,10 +1,10 @@
 {
   "name": "copy-plus",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Declare folders to copy and/or watch into a destination folder",
   "main": "index.js",
   "bin": {
-    "nfc": "index.js"
+    "copy-plus": "index.js"
   },
   "scripts": {
     "test": "cd test; node .."
