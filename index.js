@@ -27,8 +27,16 @@ if (createBrotliCompress) {
   console.warn('WARN: Brotli is only enabled in node 11.7+')
 }
 
-const handleFile = async (path, dest, keepPath, br, gz) => {
-  const filePath = resolve(dest, keepPath == false ? path.split('/').pop() : path)
+const handleFile = async (path, dest, keepPath, br, gz, ignoreWatchDir) => {
+  let modifiedPath = path.split('/')
+  if (ignoreWatchDir == true) {
+    modifiedPath.shift()
+    modifiedPath = modifiedPath.join('/')
+  }
+  if (keepPath == false) {
+    modifiedPath = modifiedPath.pop()
+  }
+  const filePath = resolve(dest, modifiedPath)
   await fs.createFile(filePath)
   const read = fs.createReadStream(path)
   read.pipe(fs.createWriteStream(resolve(dest, filePath)));
@@ -47,7 +55,8 @@ if (program.watch) {
     dirs,
     ignore,
     dest,
-    keepPath
+    keepPath,
+    ignoreWatchDir
   }) => {
     chokidar
       .watch(dirs, {
@@ -56,8 +65,8 @@ if (program.watch) {
         },
         persistent: true,
       })
-      .on('add', path => handleFile(path, dest, keepPath))
-      .on('change', path => handleFile(path, dest, keepPath))
+      .on('add', path => handleFile(path, dest, keepPath, ignoreWatchDir))
+      .on('change', path => handleFile(path, dest, keepPath, ignoreWatchDir))
       .on('unlink', async path => {
         await fs.remove(`${__dirname}/dist/${path}`);
       })
@@ -75,7 +84,8 @@ package.copy.concat(watch).map(async (directory) => {
     keepPath,
     ignore,
     gz,
-    br
+    br,
+    ignoreWatchDir
   } = directory
   if (ignore) {
     dirs.push(ignore)
@@ -84,6 +94,6 @@ package.copy.concat(watch).map(async (directory) => {
   const matches = await glob(dirs);
 
   matches.map(async path => {
-    handleFile(path, dest, keepPath, br, gz)
+    handleFile(path, dest, keepPath, br, gz, ignoreWatchDir)
   });
 });
