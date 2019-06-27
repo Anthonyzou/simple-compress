@@ -57,7 +57,7 @@ const handleFile = async (path, dest, keepPath, br, gz, ignoreWatchDir) => {
   }
 };
 
-if (program.watch) {
+if (program.watch && package.watch) {
   package.watch.map(({
     dirs,
     ignore,
