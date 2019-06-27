@@ -1,4 +1,4 @@
-<h2 align="center">Simple file copying delcarations</h2>
+<h2 align="center">Copy Plus</h2>
 
 ** Light **: Smaller than gulp
 
@@ -8,10 +8,10 @@
 
 ## Getting Started
 
-Install node-file-copier using [`yarn`](https://yarnpkg.com/en/package/node-file-copier):
+Install copy-plus using [`yarn`](https://yarnpkg.com/en/package/copy-plus):
 
 ```bash
-yarn add --dev node-file-copier
+yarn add --dev copy-plus
 ```
 
 ## Usage
@@ -42,6 +42,14 @@ Configure your `package.json`
 }
 ```
 
+- `keepPath`: Ignores source directory structure when false
+  - when true: dist/src/services/templates => dist/src/services/templates/node_modules/muicss/dist/email/\*.css
+  - when false: dist/src/services/templates => dist/src/services/templates/<FILE>.css
+- `gz`: Prodce a DEST.gz file
+- `br`: Prodce a DEST.br file - only available on node 11.7+
+- `dirs`: Glob patterns to watch directories to
+- `dest`: directory to place items in
+
 ## Command line
 
 # Run
@@ -68,4 +76,4 @@ Options:
 
 ## License
 
-node-file-copier is [MIT licensed](./LICENSE).
+copy-plus is [MIT licensed](./LICENSE).

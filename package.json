@@ -1,7 +1,7 @@
 {
-  "name": "node-file-copier",
-  "version": "0.0.1",
-  "description": "",
+  "name": "copy-plus",
+  "version": "0.0.2",
+  "description": "Declare folders to copy and/or watch into a destination folder",
   "main": "index.js",
   "bin": {
     "nfc": "index.js"
