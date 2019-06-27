@@ -1,6 +1,6 @@
 {
   "name": "copy-plus",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Declare folders to copy and/or watch into a destination folder",
   "main": "index.js",
   "engines": {
@@ -11,6 +11,10 @@
   },
   "scripts": {
     "test": "cd test; node .."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Anthonyzou/copy-plus"
   },
   "author": "Anthony Ou",
   "license": "MIT",
