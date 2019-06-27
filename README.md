@@ -26,7 +26,8 @@ Configure your `package.json`
         "dirs": ["src/**", "test/**"],
         "ignore": "!**/*.ts",
         "dest": "dist",
-        "keepPath": true
+        "keepPath": true,
+        "ignoreWatchDir": true
       }
     ],
     "copy": [
@@ -46,9 +47,13 @@ Configure your `package.json`
   - when true: dist/src/services/templates => dist/src/services/templates/node_modules/muicss/dist/email/\*.css
   - when false: dist/src/services/templates => dist/src/services/templates/<FILE>.css
 - `gz`: Prodce a DEST.gz file
+  - ignored in watch configurations
 - `br`: Prodce a DEST.br file - only available on node 11.7+
+  - ignored in watch configurations
 - `dirs`: Glob patterns to watch directories to
 - `dest`: directory to place items in
+- `ignoreWatchDir`: Don't use the root directory in output file structure
+  - `dir:["src/**"]` => `a/b/c.txt` and would not give `src/a/b/c.txt`
 
 ## Command line
 

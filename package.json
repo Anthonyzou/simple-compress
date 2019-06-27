@@ -33,6 +33,7 @@
     "typescript",
     "file",
     "fileCopying",
+    "fileCompression",
     "fsevents"
   ]
 }
