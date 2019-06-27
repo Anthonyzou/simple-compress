@@ -13,11 +13,11 @@
     ],
     "copy": [
       {
-        "gz": true,
-        "br": true,
         "dirs": [
           "node_modules/muicss/dist/email/*.css"
         ],
+        "gz": true,
+        "br": true,
         "dest": "dist/src/services/templates",
         "keepPath": false
       }

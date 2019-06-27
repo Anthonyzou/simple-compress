@@ -3,16 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "pkgc": "index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Anthony Ou",
   "license": "MIT",
   "dependencies": {
-    "chokidar": "^3.0.1",
-    "commander": "^2.20.0",
-    "fs-extra": "^8.0.1",
-    "globby": "^9.2.0"
+    "chokidar": ">=3.0.1",
+    "commander": ">=2.20.0",
+    "fs-extra": ">=8.0.1",
+    "glob-to-regexp": "^0.4.1",
+    "globby": ">=9.2.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.0.0",
