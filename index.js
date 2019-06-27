@@ -2,8 +2,8 @@
 
 const chokidar = require('chokidar');
 const program = require('commander');
-var glob = require('globby');
-var {
+const glob = require('globby');
+const {
   resolve
 } = require('path');
 const {
@@ -18,20 +18,25 @@ program.parse(process.argv);
 const package = JSON.parse(fs.readFileSync('package.json')).packaging
 
 const gzip = createGzip(package.gzConfig || {});
-const brotli = createBrotliCompress(package.brConfig || {});
+let brotli
+if (createBrotliCompress) {
+  brotli = createBrotliCompress(package.brConfig || {});
+} else if (JSON.stringify(package).includes('"br"')) {
+  console.warn('WARN: Brotli is only enabled in node 11.7+')
+}
 
 const handleFile = async (path, dest, keepPath, br, gz) => {
   const filePath = resolve(dest, keepPath == false ? path.split('/').pop() : path)
   await fs.createFile(filePath)
   const read = fs.createReadStream(path)
   read.pipe(fs.createWriteStream(resolve(dest, filePath)));
-  if (br == true) {
+  if (br == true && brotli) {
     const br = fs.createWriteStream(`${path}.br`);
-    read.pipe(gzip).pipe(br);
+    read.pipe(brotli).pipe(br);
   }
   if (gz == true) {
     const gz = fs.createWriteStream(`${path}.gz`);
-    read.pipe(brotli).pipe(gz);
+    read.pipe(gzip).pipe(gz);
   }
 };
 
