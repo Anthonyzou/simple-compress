@@ -34,10 +34,13 @@ const handleFile = async (path, dest, keepPath, br, gz, ignoreWatchDir) => {
   } else {
     modifiedPath = modifiedPath.join('/')
   }
+
   const filePath = resolve(dest, modifiedPath)
   await fs.createFile(filePath)
   const read = fs.createReadStream(path)
-  read.pipe(fs.createWriteStream(resolve(dest, filePath)));
+  if (dest !== '.') {
+    read.pipe(fs.createWriteStream(resolve(dest, filePath)));
+  }
   if (br == true) {
     if (createBrotliCompress) {
       const brotli = createBrotliCompress(package.brConfig || {});
@@ -85,8 +88,8 @@ if (program.watch) {
   });
 }
 
-const watch = program.watch ? [] : package.watch;
-package.copy.concat(watch).map(async (directory) => {
+const watch = (package.copy || []).concat(program.watch ? [] : package.watch || [])
+watch.concat(watch).map(async (directory) => {
   const {
     dirs,
     dest,
