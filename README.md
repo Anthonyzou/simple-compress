@@ -20,7 +20,7 @@ Configure your `package.json`
 
 ```json
 {
-  "nfc": {
+  "cppConfig": {
     "watch": [
       {
         "dirs": ["src/**", "test/**"],

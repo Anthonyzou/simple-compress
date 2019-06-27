@@ -15,8 +15,10 @@ const globToRegexp = require("glob-to-regexp")
 
 program.option('-w, --watch', 'Watch directories', false);
 program.parse(process.argv);
-const package = JSON.parse(fs.readFileSync('package.json')).packaging
-
+const package = JSON.parse(fs.readFileSync('package.json')).cppConfig
+if (!package) {
+  return console.log('No configuration')
+}
 const gzip = createGzip(package.gzConfig || {});
 let brotli
 if (createBrotliCompress) {
