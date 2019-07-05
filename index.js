@@ -38,7 +38,7 @@ const handleFile = async (path, dest, keepPath, br, gz, ignoreWatchDir) => {
   const filePath = resolve(dest, modifiedPath)
   await fs.createFile(filePath)
   const read = fs.createReadStream(path)
-  if (dest !== '.') {
+  if (dest !== '.' && dest !== './') {
     read.pipe(fs.createWriteStream(resolve(dest, filePath)));
   }
   if (br == true) {

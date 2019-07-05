@@ -1,6 +1,6 @@
 {
   "name": "copy-plus",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Declare folders to copy and/or watch into a destination folder",
   "main": "index.js",
   "engines": {
