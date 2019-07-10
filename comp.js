@@ -1,10 +1,13 @@
 const fs = require('fs');
-const { createGzip, createBrotliCompress } = require('zlib');
+const {
+  createGzip,
+  createBrotliCompress
+} = require('zlib');
 
-const gzip = createGzip({});
-const brotli = createBrotliCompress({});
 
-const compression = async file => {
+module.exports = async file => {
+  const gzip = createGzip({});
+  const brotli = createBrotliCompress({});
   const input = fs.createReadStream(file);
   const br = fs.createWriteStream(`${file}.br`);
   const gz = fs.createWriteStream(`${file}.gz`);
@@ -21,12 +24,3 @@ const compression = async file => {
     }),
   ]);
 };
-
-process.on('message', async message => {
-  try {
-    await compression(message);
-  } catch (e) {
-    console.log(e);
-  }
-  process.send(message);
-});
